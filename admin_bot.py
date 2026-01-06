@@ -13,7 +13,6 @@ MONGO_URI = "mongodb+srv://shadow_user:Z4absent@cluster0.xmn2jzp.mongodb.net/?ap
 client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
-users_col = db.users
 config_col = db.config  # Added collection for config
 
 def send_to_admin(order_id, username, file_path):
