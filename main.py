@@ -5,18 +5,19 @@ from datetime import datetime, timezone
 from pymongo import MongoClient
 from utils import delete_process_technical
 from admin_bot import send_to_admin
-import os
 
 # -------------------- Настройки --------------------
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
-MANAGER_ID = int(os.environ.get("MANAGER_ID"))
+BOT_TOKEN = "8488297990:AAFr_qB0MXf94v2cZYHHmngptEL2bn_HUh8"
+MANAGER_ID = 7667654870
+
 user_bot = telebot.TeleBot(BOT_TOKEN)
 
 # -------------------- MongoDB --------------------
-MONGO_URI = os.environ.get("MONGO_URI")
+MONGO_URI = "mongodb+srv://shadow_user:Z4absent@cluster0.xmn2jzp.mongodb.net/?appName=Cluster0"
 client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
+users_col = db.users
 config_col = db.config  # <-- добавляем для получения настроек админа
 
 # -------------------- Хранилища --------------------
