@@ -10,11 +10,11 @@ import os
 # -------------------- Настройки --------------------
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 MANAGER_ID = int(os.environ.get("MANAGER_ID"))
-user_bot = telebot.TeleBot("BOT_TOKEN")
+user_bot = telebot.TeleBot(BOT_TOKEN)
 
 # -------------------- MongoDB --------------------
 MONGO_URI = os.environ.get("MONGO_URI")
-client = MongoClient("MONGO_URI")
+client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
 config_col = db.config  # <-- добавляем для получения настроек админа

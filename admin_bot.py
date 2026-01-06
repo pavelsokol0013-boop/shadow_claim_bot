@@ -5,11 +5,11 @@ from telebot import types
 
 ADMIN_BOT_TOKEN = os.environ.get("ADMIN_BOT_TOKEN")
 MANAGER_ID = int(os.environ.get("MANAGER_ID"))
-admin_bot = telebot.TeleBot("ADMIN_BOT_TOKEN")
+admin_bot = telebot.TeleBot(ADMIN_BOT_TOKEN)
 
 # Mongo
 MONGO_URI = os.environ.get("MONGO_URI")
-client = MongoClient("MONGO_URI")
+client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
 config_col = db.config  # Added collection for config
