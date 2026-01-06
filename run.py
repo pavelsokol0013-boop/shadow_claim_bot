@@ -1,31 +1,15 @@
-import threading
-import time
-
+import threading, time
 from main import user_bot
-from admin_bot import admin_bot, register_approve_command  # <-- важно импортировать функцию
+from admin_bot import admin_bot, register_approve_command
 
 if __name__ == "__main__":
-    # ✅ Регистрируем обработчик approve до запуска polling
     register_approve_command(user_bot)
 
-    def run_user_bot():
-        print("🤖 Основной бот запущен")
-        user_bot.polling(none_stop=True, skip_pending=True)
-
-    def run_admin_bot():
-        print("🛠 Админ-бот запущен")
-        admin_bot.polling(none_stop=True, skip_pending=True)
-
-    t1 = threading.Thread(target=run_user_bot, daemon=True)
-    t2 = threading.Thread(target=run_admin_bot, daemon=True)
+    t1 = threading.Thread(target=lambda: user_bot.polling(none_stop=True, skip_pending=True), daemon=True)
+    t2 = threading.Thread(target=lambda: admin_bot.polling(none_stop=True, skip_pending=True), daemon=True)
 
     t1.start()
     t2.start()
 
-    print("🚀 Оба бота работают. Нажми Ctrl+C для выхода")
-
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\n⛔ Остановка ботов")
+    while True:
+        time.sleep(1)

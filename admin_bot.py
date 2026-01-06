@@ -3,13 +3,12 @@ import os
 from pymongo import MongoClient
 from telebot import types
 
-ADMIN_BOT_TOKEN = "8532357074:AAGLA8DtQdvhpw_OM2SxLDwHwGi7RhDOT4s"
-MANAGER_ID = 7667654870
-
+ADMIN_BOT_TOKEN = os.environ.get("ADMIN_BOT_TOKEN")
+MANAGER_ID = int(os.environ.get("MANAGER_ID"))
 admin_bot = telebot.TeleBot(ADMIN_BOT_TOKEN)
 
 # Mongo
-MONGO_URI = "mongodb+srv://shadow_user:Z4absent@cluster0.xmn2jzp.mongodb.net/?retryWrites=true&w=majority"
+MONGO_URI = os.environ.get("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
