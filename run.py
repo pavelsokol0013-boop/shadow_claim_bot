@@ -25,15 +25,12 @@ def user_webhook():
 if __name__ == "__main__":
     print(f"🚀 Railway Flask started on port {PORT}")
 
-    # Устанавливаем webhook с повторной попыткой
+    # Устанавливаем webhook только для user_bot с повторной попыткой
     for attempt in range(3):
         try:
             user_bot.remove_webhook()
             user_bot.set_webhook(url=WEBHOOK_URL)
-
-            admin_bot.remove_webhook()
-            admin_bot.set_webhook(url=WEBHOOK_URL)
-            print("✅ Webhook успешно установлен")
+            print("✅ Webhook успешно установлен для user_bot")
             break
         except Exception as e:
             print(f"⚠️ Попытка {attempt+1} не удалась: {e}")
