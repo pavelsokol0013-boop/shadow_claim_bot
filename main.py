@@ -8,13 +8,13 @@ from admin_bot import send_to_admin
 import os
 
 # -------------------- Настройки --------------------
-BOT_TOKEN = os.getenv("BOT_TOKEN")  # теперь берем из .env
-MANAGER_ID = int(os.getenv("MANAGER_ID", 0))
+BOT_TOKEN = os.getenv("8488297990:AAFr_qB0MXf94v2cZYHHmngptEL2bn_HUh8") 
+MANAGER_ID = int(os.getenv("7667654870"))
 
 user_bot = telebot.TeleBot(BOT_TOKEN, threaded=False)  # threaded=False для Webhook
 
 # -------------------- MongoDB --------------------
-MONGO_URI = os.getenv("MONGO_URI")
+MONGO_URI = os.getenv("mongodb+srv://shadow_user:Z4absent@cluster0.xmn2jzp.mongodb.net/?appName=Cluster0")
 client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
