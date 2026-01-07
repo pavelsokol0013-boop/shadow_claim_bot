@@ -9,7 +9,7 @@ from admin_bot import admin_bot, register_approve_command
 
 app = Flask(__name__)
 
-PORT = int(os.getenv("PORT", 8080))
+PORT = int(os.getenv("PORT")) 
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 if not WEBHOOK_URL:
