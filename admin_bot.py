@@ -5,7 +5,6 @@ from telebot import types
 
 ADMIN_BOT_TOKEN = "8532357074:AAGLA8DtQdvhpw_OM2SxLDwHwGi7RhDOT4s"
 MANAGER_ID = 7667654870
-
 admin_bot = telebot.TeleBot(ADMIN_BOT_TOKEN)
 
 # Mongo
