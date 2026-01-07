@@ -7,7 +7,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 ADMIN_BOT_TOKEN = os.getenv("ADMIN_BOT_TOKEN")
-MANAGER_ID = int(os.getenv("MANAGER_ID"))
+MANAGER_ID = os.getenv("MANAGER_ID")
+
+if not ADMIN_BOT_TOKEN or not MANAGER_ID:
+    raise EnvironmentError("❌ ADMIN_BOT_TOKEN или MANAGER_ID не заданы в Environment Variables!")
+
+MANAGER_ID = int(MANAGER_ID)
 admin_bot = telebot.TeleBot(ADMIN_BOT_TOKEN, threaded=False)
 
 # Mongo

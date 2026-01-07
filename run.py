@@ -1,41 +1,33 @@
-import os
-from dotenv import load_dotenv
-import telebot
+from flask import Flask, request
 from main import user_bot
 from admin_bot import admin_bot, register_approve_command
-from flask import Flask, request
+import os
 
-load_dotenv()
-
+PORT = int(os.getenv("PORT", 5000))
 WEBHOOK_URL_USER = os.getenv("WEBHOOK_URL_USER")
 WEBHOOK_URL_ADMIN = os.getenv("WEBHOOK_URL_ADMIN")
-PORT = int(os.environ.get("PORT", 5000))
 
 app = Flask(__name__)
 
-# Регистрируем обработчики админа
+# Регистрируем команды админа
 register_approve_command(user_bot)
 
-# -------------------- Webhook маршруты --------------------
+# Webhook маршруты
 @app.route("/user_webhook", methods=["POST"])
 def user_webhook():
-    if request.headers.get("content-type") == "application/json":
-        json_string = request.get_data().decode("utf-8")
-        update = telebot.types.Update.de_json(json_string)
-        user_bot.process_new_updates([update])
-        return "", 200
-    return "Invalid request", 400
+    update = request.get_json()
+    if update:
+        user_bot.process_new_updates([user_bot.types.Update.de_json(update)])
+    return "OK", 200
 
 @app.route("/admin_webhook", methods=["POST"])
 def admin_webhook():
-    if request.headers.get("content-type") == "application/json":
-        json_string = request.get_data().decode("utf-8")
-        update = telebot.types.Update.de_json(json_string)
-        admin_bot.process_new_updates([update])
-        return "", 200
-    return "Invalid request", 400
+    update = request.get_json()
+    if update:
+        admin_bot.process_new_updates([admin_bot.types.Update.de_json(update)])
+    return "OK", 200
 
-# -------------------- Установка Webhook --------------------
+# Установка webhook
 user_bot.remove_webhook()
 user_bot.set_webhook(url=WEBHOOK_URL_USER)
 

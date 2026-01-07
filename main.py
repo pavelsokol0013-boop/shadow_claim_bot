@@ -8,8 +8,13 @@ from admin_bot import send_to_admin
 import os
 
 # -------------------- Настройки --------------------
-BOT_TOKEN = os.getenv("BOT_TOKEN") 
-MANAGER_ID = int(os.getenv("MANAGER_ID"))
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+MANAGER_ID = os.getenv("MANAGER_ID")
+
+if not BOT_TOKEN or not MANAGER_ID:
+    raise EnvironmentError("❌ BOT_TOKEN или MANAGER_ID не заданы в Environment Variables!")
+
+MANAGER_ID = int(MANAGER_ID)
 
 user_bot = telebot.TeleBot(BOT_TOKEN, threaded=False)  # threaded=False для Webhook
 
