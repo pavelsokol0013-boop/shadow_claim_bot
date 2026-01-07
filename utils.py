@@ -16,7 +16,13 @@ def delete_process_technical(bot, chat_id, username, cleanup_message_id=None):
         percents = [17, 39, 62, 91, 98, 100]
         step_times = [datetime.now().strftime("%H:%M:%S") for _ in steps]
 
-        msg = bot.send_message(chat_id, f"[ShadowNode‑12]\nOperation: ERASE_OBJECT\nTarget: {username}\n")
+        try:
+            msg = bot.send_message(
+                chat_id,
+                f"[ShadowNode‑12]\nOperation: ERASE_OBJECT\nTarget: {username}\n"
+            )
+        except Exception:
+            return
 
         for idx, (step, percent) in enumerate(zip(steps, percents)):
             time.sleep(random.uniform(0.8, 1.5))
@@ -39,4 +45,4 @@ def delete_process_technical(bot, chat_id, username, cleanup_message_id=None):
         bot.send_message(chat_id, f"✅ {username} удалён.", reply_markup=kb)
 
     # запуск функции в отдельном потоке, чтобы не блокировать Webhook
-    threading.Thread(target=_delete_process).start()
+    threading.Thread(target=_delete_process, daemon=True).start()

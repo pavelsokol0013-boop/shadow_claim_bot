@@ -20,6 +20,10 @@ user_bot = telebot.TeleBot(BOT_TOKEN, threaded=False)  # threaded=False для W
 
 # -------------------- MongoDB --------------------
 MONGO_URI = os.getenv("MONGO_URI")
+
+if not MONGO_URI:
+    raise EnvironmentError("❌ MONGO_URI не задана в Environment Variables!")
+
 client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
