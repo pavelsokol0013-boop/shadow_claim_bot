@@ -7,8 +7,8 @@ from flask import Flask, request
 
 load_dotenv()
 
-WEBHOOK_URL_USER = os.getenv("https://shadowclaimbot-production.up.railway.app/user_webhook")
-WEBHOOK_URL_ADMIN = os.getenv("https://shadowclaimbot-production.up.railway.app/admin_webhook")
+WEBHOOK_URL_USER = os.getenv("WEBHOOK_URL_USER")
+WEBHOOK_URL_ADMIN = os.getenv("WEBHOOK_URL_ADMIN")
 PORT = int(os.environ.get("PORT", 5000))
 
 app = Flask(__name__)

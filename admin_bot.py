@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-ADMIN_BOT_TOKEN = os.getenv("8532357074:AAGLA8DtQdvhpw_OM2SxLDwHwGi7RhDOT4s")
-MANAGER_ID = int(os.getenv("7667654870"))
+ADMIN_BOT_TOKEN = os.getenv("ADMIN_BOT_TOKEN")
+MANAGER_ID = int(os.getenv("MANAGER_ID"))
 admin_bot = telebot.TeleBot(ADMIN_BOT_TOKEN, threaded=False)
 
 # Mongo
-MONGO_URI = os.getenv("mongodb+srv://shadow_user:Z4absent@cluster0.xmn2jzp.mongodb.net/?appName=Cluster0")
+MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
