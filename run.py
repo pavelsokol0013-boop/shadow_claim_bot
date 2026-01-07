@@ -1,32 +1,47 @@
-import threading
-import time
-
-from main import user_bot  # <-- в main.py у тебя user_bot = telebot.TeleBot(BOT_TOKEN)
+from flask import Flask, request
+import os
+from dotenv import load_dotenv
+import telebot
+from main import user_bot
 from admin_bot import admin_bot, register_approve_command
 
+load_dotenv()
+
+WEBHOOK_URL_USER = os.getenv("WEBHOOK_URL_USER")
+WEBHOOK_URL_ADMIN = os.getenv("WEBHOOK_URL_ADMIN")
+PORT = int(os.environ.get("PORT", 5000))
+
+app = Flask(__name__)
+
+# Регистрируем обработчики админа
+register_approve_command(user_bot)
+
+# -------------------- Webhook маршруты --------------------
+@app.route("/user_webhook", methods=["POST"])
+def user_webhook():
+    if request.headers.get("content-type") == "application/json":
+        json_string = request.get_data().decode("utf-8")
+        update = telebot.types.Update.de_json(json_string)
+        user_bot.process_new_updates([update])
+        return "", 200
+    return "Invalid request", 400
+
+@app.route("/admin_webhook", methods=["POST"])
+def admin_webhook():
+    if request.headers.get("content-type") == "application/json":
+        json_string = request.get_data().decode("utf-8")
+        update = telebot.types.Update.de_json(json_string)
+        admin_bot.process_new_updates([update])
+        return "", 200
+    return "Invalid request", 400
+
+# -------------------- Установка Webhook --------------------
+user_bot.remove_webhook()
+user_bot.set_webhook(url=WEBHOOK_URL_USER)
+
+admin_bot.remove_webhook()
+admin_bot.set_webhook(url=WEBHOOK_URL_ADMIN)
+
 if __name__ == "__main__":
-    # ✅ Регистрируем обработчик approve до запуска polling
-    register_approve_command(user_bot)
-
-    def run_user_bot():
-        print("🤖 Основной бот запущен")
-        user_bot.polling(none_stop=True, skip_pending=True)
-
-    def run_admin_bot():
-        print("🛠 Админ-бот запущен")
-        admin_bot.polling(none_stop=True, skip_pending=True)
-
-    # создаём обычные потоки (без daemon=True!)
-    t1 = threading.Thread(target=run_user_bot)
-    t2 = threading.Thread(target=run_admin_bot)
-
-    t1.start()
-    t2.start()
-
-    print("🚀 Оба бота работают. Нажми Ctrl+C для выхода")
-
-    try:
-        while True:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        print("\n⛔ Остановка ботов")
+    print("🚀 Flask сервер запущен, Webhooks готовы")
+    app.run(host="0.0.0.0", port=PORT)

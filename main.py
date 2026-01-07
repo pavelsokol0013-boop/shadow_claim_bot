@@ -1,23 +1,24 @@
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-import random, string, re, time
+import random, string, re
 from datetime import datetime, timezone
 from pymongo import MongoClient
 from utils import delete_process_technical
 from admin_bot import send_to_admin
+import os
 
 # -------------------- Настройки --------------------
-BOT_TOKEN = "8488297990:AAFr_qB0MXf94v2cZYHHmngptEL2bn_HUh8"
-MANAGER_ID = 7667654870
+BOT_TOKEN = os.getenv("BOT_TOKEN")  # теперь берем из .env
+MANAGER_ID = int(os.getenv("MANAGER_ID", 0))
 
-user_bot = telebot.TeleBot(BOT_TOKEN)
+user_bot = telebot.TeleBot(BOT_TOKEN, threaded=False)  # threaded=False для Webhook
 
 # -------------------- MongoDB --------------------
-MONGO_URI = "mongodb+srv://shadow_user:Z4absent@cluster0.xmn2jzp.mongodb.net/?appName=Cluster0"
+MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client.shadow_bot
 orders_col = db.orders
-config_col = db.config  # <-- добавляем для получения настроек админа
+config_col = db.config
 
 # -------------------- Хранилища --------------------
 user_data = {}
@@ -27,14 +28,10 @@ start_message_id = {}
 
 # -------------------- Получение актуального кошелька и суммы --------------------
 def get_current_payment_config():
-    """
-    Возвращает актуальные настройки: сумма оплаты и кошелек
-    Если настроек нет, возвращает значения по умолчанию
-    """
     config = config_col.find_one()
     if not config:
         return {
-            "payment_amount": 20,  # значение по умолчанию
+            "payment_amount": 20,
             "wallet": "TJcWGwkKNYCmpt6otaM7vf1gj1KBEsdzNX"
         }
     return {
