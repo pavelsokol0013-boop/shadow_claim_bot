@@ -1,9 +1,9 @@
-from flask import Flask, request
 import os
 from dotenv import load_dotenv
 import telebot
 from main import user_bot
 from admin_bot import admin_bot, register_approve_command
+from flask import Flask, request
 
 load_dotenv()
 
@@ -43,5 +43,5 @@ admin_bot.remove_webhook()
 admin_bot.set_webhook(url=WEBHOOK_URL_ADMIN)
 
 if __name__ == "__main__":
-    print("🚀 Flask сервер запущен, Webhooks готовы")
-    app.run(host="0.0.0.0", port=PORT)
+    print(f"🚀 Flask сервер запущен на порту {PORT}, Webhooks готовы")
+    app.run(host="0.0.0.0", port=PORT, debug=False, threaded=True)
