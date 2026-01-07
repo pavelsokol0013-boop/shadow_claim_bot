@@ -9,25 +9,15 @@ from admin_bot import admin_bot, register_approve_command
 app = Flask(__name__)
 
 PORT = int(os.getenv("PORT", 8080))
-WEBHOOK_URL_USER = os.getenv("WEBHOOK_URL_USER")
-WEBHOOK_URL_ADMIN = os.getenv("WEBHOOK_URL_ADMIN")
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 register_approve_command(user_bot)
 
-@app.route("/user_webhook", methods=["POST"])
+@app.route("/webhook", methods=["POST"])
 def user_webhook():
     update = request.get_json()
     if update:
         user_bot.process_new_updates([
-            telebot.types.Update.de_json(update)
-        ])
-    return "OK", 200
-
-@app.route("/admin_webhook", methods=["POST"])
-def admin_webhook():
-    update = request.get_json()
-    if update:
-        admin_bot.process_new_updates([
             telebot.types.Update.de_json(update)
         ])
     return "OK", 200
@@ -39,10 +29,10 @@ if __name__ == "__main__":
     for attempt in range(3):
         try:
             user_bot.remove_webhook()
-            user_bot.set_webhook(url=WEBHOOK_URL_USER)
+            user_bot.set_webhook(url=WEBHOOK_URL)
 
             admin_bot.remove_webhook()
-            admin_bot.set_webhook(url=WEBHOOK_URL_ADMIN)
+            admin_bot.set_webhook(url=WEBHOOK_URL)
             print("✅ Webhook успешно установлен")
             break
         except Exception as e:
