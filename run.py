@@ -3,7 +3,7 @@ from main import user_bot
 from admin_bot import admin_bot, register_approve_command
 import os
 
-PORT = int(os.getenv("PORT", 5000))
+PORT = int(os.getenv("PORT", 8080))
 WEBHOOK_URL_USER = os.getenv("WEBHOOK_URL_USER")
 WEBHOOK_URL_ADMIN = os.getenv("WEBHOOK_URL_ADMIN")
 
